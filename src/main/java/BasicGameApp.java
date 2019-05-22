@@ -3,14 +3,22 @@ import com.almasb.fxgl.entity.Entities;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.input.Input;
 import com.almasb.fxgl.input.UserAction;
+import com.almasb.fxgl.physics.CollisionHandler;
 import com.almasb.fxgl.settings.GameSettings;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
+
+import java.text.SimpleDateFormat;
 import java.util.Map;
 public class BasicGameApp extends  GameApplication{
 
+    private Entity player;
+    private Entity NPC;
+    private String displayMonth="April";
+    private String hitsound;
 
     @Override
     protected void initSettings(GameSettings gameSettings) {
@@ -20,14 +28,30 @@ public class BasicGameApp extends  GameApplication{
         gameSettings.setVersion("Version beta");
     }
 
-    private Entity player;
-
     @Override
     protected void initGame() {
+        super.initGame();
+        NPC =Entities.builder()
+                .at(200,400)
+                .viewFromNode(new Circle(5))
+                 .buildAndAttach(getGameWorld());
         player = Entities.builder()
                 .at(300, 300)
                 .viewFromNode(new Rectangle(25, 25, Color.BLUE))
                 .buildAndAttach(getGameWorld());
+    }
+
+    @Override
+    protected void initPhysics()
+    {
+        getPhysicsWorld().addCollisionHandler(new CollisionHandler() {
+            @Override
+            protected void onCollisionBegin(Entity player, Entity NPC) {
+                NPC.removeFromWorld();
+            }
+        });
+
+
     }
 
     @Override
