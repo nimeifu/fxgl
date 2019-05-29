@@ -19,11 +19,13 @@ public class BasicGameApp extends  GameApplication{
     private Entity NPC;
     private String displayMonth="April";
     private String hitsound;
+    private final int ScreenWidth=1000;
+    private final int ScreenHeight=618;
 
     @Override
     protected void initSettings(GameSettings gameSettings) {
-        gameSettings.setWidth(1000);
-        gameSettings.setHeight(1000);
+        gameSettings.setWidth(ScreenWidth);
+        gameSettings.setHeight(ScreenHeight);
         gameSettings.setTitle("basic game");
         gameSettings.setVersion("Version beta");
     }
@@ -31,10 +33,12 @@ public class BasicGameApp extends  GameApplication{
     @Override
     protected void initGame() {
         super.initGame();
+        //getGameWorld().addEntityFactory(new );
         NPC =Entities.builder()
                 .at(200,400)
-                .viewFromNode(new Circle(5))
-                 .buildAndAttach(getGameWorld());
+                .viewFromNode(new Rectangle(30,15,Color.RED)
+                 .
+
         player = Entities.builder()
                 .at(300, 300)
                 .viewFromNode(new Rectangle(25, 25, Color.BLUE))
