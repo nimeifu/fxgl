@@ -5,6 +5,7 @@ import com.almasb.fxgl.input.Input;
 import com.almasb.fxgl.input.UserAction;
 import com.almasb.fxgl.physics.CollisionHandler;
 import com.almasb.fxgl.settings.GameSettings;
+import enums.EntityType;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -19,8 +20,8 @@ public class BasicGameApp extends  GameApplication{
     private Entity NPC;
     private String displayMonth="April";
     private String hitsound;
-    private final int ScreenWidth=1000;
-    private final int ScreenHeight=618;
+    private final int ScreenWidth=1024;
+    private final int ScreenHeight=633;
 
     @Override
     protected void initSettings(GameSettings gameSettings) {
@@ -33,12 +34,6 @@ public class BasicGameApp extends  GameApplication{
     @Override
     protected void initGame() {
         super.initGame();
-        //getGameWorld().addEntityFactory(new );
-        NPC =Entities.builder()
-                .at(200,400)
-                .viewFromNode(new Rectangle(30,15,Color.RED)
-                 .
-
         player = Entities.builder()
                 .at(300, 300)
                 .viewFromNode(new Rectangle(25, 25, Color.BLUE))
@@ -48,10 +43,10 @@ public class BasicGameApp extends  GameApplication{
     @Override
     protected void initPhysics()
     {
-        getPhysicsWorld().addCollisionHandler(new CollisionHandler() {
+        getPhysicsWorld().addCollisionHandler(new CollisionHandler(EntityType.Player,EntityType.coin) {
             @Override
-            protected void onCollisionBegin(Entity player, Entity NPC) {
-                NPC.removeFromWorld();
+            protected void onCollisionBegin(Entity player, Entity coin) {
+                coin.removeFromWorld();
             }
         });
 
@@ -65,7 +60,7 @@ public class BasicGameApp extends  GameApplication{
         input.addAction(new UserAction("Move Right") {
             @Override
             protected void onAction() {
-                player.translateX(1); // move right 5 pixels
+                player.translateX(1);
 
             }
         }, KeyCode.D);
@@ -73,7 +68,7 @@ public class BasicGameApp extends  GameApplication{
         input.addAction(new UserAction("Move Left") {
             @Override
             protected void onAction() {
-                player.translateX(-1); // move left 5 pixels
+                player.translateX(-1);
 
             }
         }, KeyCode.A);
@@ -81,7 +76,7 @@ public class BasicGameApp extends  GameApplication{
         input.addAction(new UserAction("Move Up") {
             @Override
             protected void onAction() {
-                player.translateY(-1); // move up 5 pixels
+                player.translateY(-1);
 
             }
         }, KeyCode.W);
@@ -89,12 +84,17 @@ public class BasicGameApp extends  GameApplication{
         input.addAction(new UserAction("Move Down") {
             @Override
             protected void onAction() {
-                player.translateY(1); // move down 5 pixels
+                player.translateY(1);
 
             }
         }, KeyCode.S);
 
-
+        input.addAction(new UserAction("slash") {
+            @Override
+            protected void onAction(){
+                player
+            }
+        });
     }
 
     @Override

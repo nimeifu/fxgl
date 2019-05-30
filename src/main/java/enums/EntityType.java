@@ -5,6 +5,8 @@ public enum  EntityType {
     NPC,
     Arrow,
     Bullet,
-    Ai
+    Ai,
+    coin,
+    material
 
 }
