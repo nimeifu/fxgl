@@ -4,6 +4,7 @@ import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.components.CollidableComponent;
 import com.almasb.fxgl.input.Input;
 import com.almasb.fxgl.input.InputMapping;
+import com.almasb.fxgl.input.OnUserAction;
 import com.almasb.fxgl.input.UserAction;
 import com.almasb.fxgl.physics.CollisionHandler;
 import com.almasb.fxgl.settings.GameSettings;
@@ -31,6 +32,7 @@ public class BasicGameApp extends  GameApplication {
     {
         player,item
     }
+    private playerComponet playerComponet;
 
 
     @Override
@@ -81,37 +83,38 @@ public class BasicGameApp extends  GameApplication {
 
     @Override
     protected void initInput() {
-        Input input=getInput();
+        Input input = getInput();
 
-        input.addAction(new UserAction("MoveLeft") {
-            @Override
-            protected void onAction() {
-                player.translateX(-2);
-                getGameState().increment("pixelsMoved",+2);
-            }
-        },KeyCode.A);
-
-        input.addAction(new UserAction("MoveDown") {
-            @Override
-            protected void onAction() {
-                player.translateY(2);
-            }
-        },KeyCode.S);
-
-        input.addAction(new UserAction("MoveUp") {
-            @Override
-            protected void onAction() {
-                player.translateY(-2);
-            }
-        },KeyCode.W);
-
-        input.addAction(new UserAction("MoveRight") {
-            @Override
-            protected void onAction() {
-                player.translateX(2);
-            }
-        },KeyCode.D);
+        input.addInputMapping(new InputMapping("Move Left", KeyCode.A));
+        input.addInputMapping(new InputMapping("Move Right", KeyCode.D));
+        input.addInputMapping(new InputMapping("Move up", KeyCode.W));
+        input.addInputMapping(new InputMapping("Move down", KeyCode.S));
+        input.addInputMapping(new InputMapping("Slash", MouseButton.PRIMARY));
+        input.addInputMapping(new InputMapping("shoot", MouseButton.SECONDARY));
     }
+        @OnUserAction(name = "Move Left")
+        public void moveleft()
+        {
+            playerComponet.left();
+        }
+
+        @OnUserAction(name = "Move Right")
+        public void moveRight()
+        {
+            playerComponet.right();
+        }
+
+        @OnUserAction(name = "Move up")
+        public void moveUp()
+        {
+            playerComponet.up();
+        }
+
+        @OnUserAction(name = "Move down")
+        public void moveDown()
+        {
+            playerComponet.down();
+        }
 
     @Override
     protected void initUI() {

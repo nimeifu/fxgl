@@ -19,7 +19,7 @@ public class playerComponet extends Component {
 
     public void down()
     {
-        position.translateY(5*speed);
+        position.translateY(2*speed);
     }
 
     public void left(){
