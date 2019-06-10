@@ -1,12 +1,15 @@
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.entity.Entities;
 import com.almasb.fxgl.entity.Entity;
+import com.almasb.fxgl.entity.components.CollidableComponent;
 import com.almasb.fxgl.input.Input;
+import com.almasb.fxgl.input.InputMapping;
 import com.almasb.fxgl.input.UserAction;
 import com.almasb.fxgl.physics.CollisionHandler;
 import com.almasb.fxgl.settings.GameSettings;
-import enums.EntityType;
+
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseButton;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
@@ -14,14 +17,21 @@ import javafx.scene.text.Text;
 
 import java.text.SimpleDateFormat;
 import java.util.Map;
-public class BasicGameApp extends  GameApplication{
+public class BasicGameApp extends  GameApplication {
+
 
     private Entity player;
     private Entity NPC;
-    private String displayMonth="April";
+
+    private String displayMonth = "April";
     private String hitsound;
-    private final int ScreenWidth=1024;
-    private final int ScreenHeight=633;
+    private final int ScreenWidth = 1024;
+    private final int ScreenHeight = 633;
+    public enum EntityType
+    {
+        player,item
+    }
+
 
     @Override
     protected void initSettings(GameSettings gameSettings) {
@@ -29,24 +39,40 @@ public class BasicGameApp extends  GameApplication{
         gameSettings.setHeight(ScreenHeight);
         gameSettings.setTitle("basic game");
         gameSettings.setVersion("Version beta");
+        gameSettings.setMenuEnabled(false);
+        gameSettings.setIntroEnabled(false);
+        gameSettings.setProfilingEnabled(false);
     }
 
     @Override
     protected void initGame() {
         super.initGame();
         player = Entities.builder()
+                .type(EntityType.player)
                 .at(300, 300)
                 .viewFromNode(new Rectangle(25, 25, Color.BLUE))
+                .with(new CollidableComponent(true))
                 .buildAndAttach(getGameWorld());
+
+        NPC=    Entities.builder()
+                .at(200,200)
+                .with(new CollidableComponent(true))
+                .buildAndAttach(getGameWorld());
+
+        Entities.builder()
+                .type(EntityType.item)
+                .at(150,150)
+                .with(new CollidableComponent(true))
+                .buildAndAttach(getGameWorld());
+
     }
 
     @Override
-    protected void initPhysics()
-    {
-        getPhysicsWorld().addCollisionHandler(new CollisionHandler(EntityType.Player,EntityType.coin) {
+    protected void initPhysics() {
+        getPhysicsWorld().addCollisionHandler(new CollisionHandler(EntityType.player,EntityType.item) {
             @Override
-            protected void onCollisionBegin(Entity player, Entity coin) {
-                coin.removeFromWorld();
+            protected void onCollisionBegin(Entity a, Entity b) {
+                super.onCollisionBegin(a, b);
             }
         });
 
@@ -55,46 +81,36 @@ public class BasicGameApp extends  GameApplication{
 
     @Override
     protected void initInput() {
-        Input input = getInput();
+        Input input=getInput();
 
-        input.addAction(new UserAction("Move Right") {
+        input.addAction(new UserAction("MoveLeft") {
             @Override
             protected void onAction() {
-                player.translateX(1);
-
+                player.translateX(-2);
+                getGameState().increment("pixelsMoved",+2);
             }
-        }, KeyCode.D);
+        },KeyCode.A);
 
-        input.addAction(new UserAction("Move Left") {
+        input.addAction(new UserAction("MoveDown") {
             @Override
             protected void onAction() {
-                player.translateX(-1);
-
+                player.translateY(2);
             }
-        }, KeyCode.A);
+        },KeyCode.S);
 
-        input.addAction(new UserAction("Move Up") {
+        input.addAction(new UserAction("MoveUp") {
             @Override
             protected void onAction() {
-                player.translateY(-1);
-
+                player.translateY(-2);
             }
-        }, KeyCode.W);
+        },KeyCode.W);
 
-        input.addAction(new UserAction("Move Down") {
+        input.addAction(new UserAction("MoveRight") {
             @Override
             protected void onAction() {
-                player.translateY(1);
-
+                player.translateX(2);
             }
-        }, KeyCode.S);
-
-        input.addAction(new UserAction("slash") {
-            @Override
-            protected void onAction(){
-                player
-            }
-        });
+        },KeyCode.D);
     }
 
     @Override
@@ -113,8 +129,7 @@ public class BasicGameApp extends  GameApplication{
     }
 
 
-    public static void main(String[] args)
-    {
+    public static void main(String[] args) {
         launch(args);
     }
 }
