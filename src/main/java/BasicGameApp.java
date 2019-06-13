@@ -49,7 +49,7 @@ public class BasicGameApp extends  GameApplication {
        Entity player =getGameWorld().spawn("Player",ScreenWidth/2,ScreenHeight/2);
        //Entity princess=getGameWorld().spawn("princess",800,ScreenHeight/2);
        playerComponet=player.getComponent(playerComponet.class);
-       getGameWorld().spawn("background");
+       getGameWorld().spawn("bg");
 
 
     }

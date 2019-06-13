@@ -35,6 +35,7 @@ import com.almasb.fxgl.particle.ParticleComponent;
 import com.almasb.fxgl.particle.ParticleEmitter;
 import com.almasb.fxgl.particle.ParticleEmitters;
 
+import com.almasb.fxgl.texture.Texture;
 import javafx.geometry.Point2D;
 import javafx.scene.effect.BlendMode;
 import javafx.scene.paint.Color;
@@ -42,6 +43,7 @@ import javafx.util.Duration;
 
 
 import static com.almasb.fxgl.app.DSLKt.play;
+import static com.almasb.fxgl.app.DSLKt.texture;
 
 
 /**
@@ -55,15 +57,18 @@ public class Factory implements EntityFactory {
         return Entities.builder()
                 .at(0,0)
                 .from (data)
-                .viewFromTexture("background.jpg")
+                .viewFromNode(texture("background.jpg",1024,633))
+
+                .renderLayer(RenderLayer.BACKGROUND)
                 .build();
     }
     @Spawns("Player")
     public Entity newPlayer(SpawnData data) {
+        Texture texture=texture("knight.jpg",62,180);
         return Entities.builder()
                 .type(Type.PLAYER)
                 .from(data)
-                .viewFromTextureWithBBox("knight.jpg")
+                .viewFromNodeWithBBox(texture)
                 .with(new CollidableComponent(true))
                 .with(new playerComponet())
                 .build();
