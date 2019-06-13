@@ -3,6 +3,7 @@ import com.almasb.fxgl.entity.Entities;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.EntityFactory;
 import com.almasb.fxgl.entity.components.CollidableComponent;
+import com.almasb.fxgl.extra.entity.components.HealthComponent;
 import com.almasb.fxgl.input.Input;
 import com.almasb.fxgl.input.InputMapping;
 import com.almasb.fxgl.input.OnUserAction;
@@ -47,41 +48,55 @@ public class BasicGameApp extends  GameApplication {
     protected void initGame() {
        getGameWorld().addEntityFactory(new Factory());
        Entity player =getGameWorld().spawn("Player",ScreenWidth/2,ScreenHeight/2);
-       //Entity princess=getGameWorld().spawn("princess",800,ScreenHeight/2);
+       Entity princess=getGameWorld().spawn("princess",850,ScreenHeight/2);
+       Entity enemy=getGameWorld().spawn("enemy",100,ScreenHeight/2);
        playerComponet=player.getComponent(playerComponet.class);
-       getGameWorld().spawn("bg");
+       getGameWorld().spawn("BG");
 
 
     }
-/*
+
     @Override
    protected void initPhysics() {
-        getPhysicsWorld().addCollisionHandler(new CollisionHandler(EntityType.player,EntityType.item) {
-            @Override
-            protected void onCollisionBegin(Entity a, Entity b) {
-                super.onCollisionBegin(a, b);
-            }
-        });
+       getPhysicsWorld().addCollisionHandler(new CollisionHandler(Type.PLAYER,Type.ENEMY) {
+           @Override
+           protected void onCollisionBegin(Entity Player, Entity Enemy) {
+               Enemy.removeFromWorld();
+           }
+       });
 
 
     }
-*/
+
     @Override
     protected void initInput() {
         getInput().addAction(new UserAction("Move Up") {
             @Override
             protected void onAction() {
-                playerComponet.up();
+               playerComponet.up();
             }
         },KeyCode.W);
 
         getInput().addAction(new UserAction("Move Down") {
             @Override
             protected void onAction() {
-                playerComponet.up();
+                playerComponet.down();
             }
         },KeyCode.S);
 
+        getInput().addAction(new UserAction("Move left") {
+            @Override
+            protected void onAction() {
+                playerComponet.left();
+            }
+        },KeyCode.A);
+
+        getInput().addAction(new UserAction("Move Right") {
+            @Override
+            protected void onAction() {
+                playerComponet.right();
+            }
+        }, KeyCode.D);
     }
     @Override
     protected void initUI() {

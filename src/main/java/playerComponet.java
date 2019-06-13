@@ -34,16 +34,16 @@ public class playerComponet extends Component {
 
     public void up()
     {
-        if(entity.getY()<100)
+
+        if(entity.getY()>150)
         {
-            position.translateY(- speed);
-        }
+            position.translateY(- speed);}
         return;
     }
 
     public void down()
     {
-        if(entity.getY()<633-speed)
+        if(entity.getY()<453)
         {
             position.translateY(speed);
         }
@@ -51,9 +51,10 @@ public class playerComponet extends Component {
     }
 
     public void left(){
-        if(entity.getX()>speed)
+        if(entity.getX()>0)
         {
             position.translateX(-speed);
+            getEntity().setScaleX(-1);
         }
         return;
     }
@@ -61,6 +62,7 @@ public class playerComponet extends Component {
     public void right(){
         if(entity.getX()<1024+speed){
             position.translateX(speed);
+            getEntity().setScaleX(1);
         }
         return;
     }

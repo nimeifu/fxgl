@@ -54,11 +54,11 @@ public class Factory implements EntityFactory {
     @Spawns("BG")
     public Entity bakcground(SpawnData data)
     {
+
         return Entities.builder()
                 .at(0,0)
                 .from (data)
                 .viewFromNode(texture("background.jpg",1024,633))
-
                 .renderLayer(RenderLayer.BACKGROUND)
                 .build();
     }
@@ -113,26 +113,26 @@ public class Factory implements EntityFactory {
                 .with(new CollidableComponent(true))
                 .build();
     }
-
+*/
     @Spawns("princess")
     public Entity princess(SpawnData data){
         return Entities.builder()
-                .type()
+                .type(Type.princess)
                 .from(data)
-                .viewFromNodeWithBBox()
+                .viewFromNodeWithBBox(FXGL.getAssetLoader().loadTexture("princess.png",62,165))
                 .with((new CollidableComponent(true)))
-                .with
+
                 .build();
     }
 
-    @Spawns("Enemy1")
-    public Entity newEnemy(SpawnData data) {
+    @Spawns("enemy")
+    public Entity Enemy(SpawnData data) {
         return Entities.builder()
                 .type(Type.ENEMY)
                 .from(data)
-                .viewFromNodeWithBBox(FXGL.getAssetLoader().loadTexture("sprite_enemy_1.png", 27, 33))
-                .with(new CollidableComponent(true), new HealthComponent(10))
-                .with(new EnemyComponent())
+                .viewFromNodeWithBBox(FXGL.getAssetLoader().loadTexture("enemy.png", 62, 170))
+                .with(new CollidableComponent(true), new HealthComponent(5))
+
                 .build();
     }
 
@@ -140,5 +140,5 @@ public class Factory implements EntityFactory {
 
 
 
-*/
+
 }
